@@ -1,0 +1,10 @@
+{
+	"package":"jp.axer.cocoainput.mixin",
+	"mixins":[
+		"SharedConstantsMixin",
+		"EditBoxMixin",
+		"AbstractSignEditScreenMixin",
+		"BookEditScreenMixin"
+	],
+	"required":true
+}
