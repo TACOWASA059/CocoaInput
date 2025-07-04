@@ -7,7 +7,7 @@ import jp.axer.cocoainput.plugin.CocoaInputController;
 import jp.axer.cocoainput.plugin.IMEOperator;
 import jp.axer.cocoainput.plugin.IMEReceiver;
 import jp.axer.cocoainput.util.ModLogger;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public class DarwinController implements CocoaInputController {
     public DarwinController() throws Exception {
@@ -30,7 +30,7 @@ public class DarwinController implements CocoaInputController {
 	            if (wrapper.get(gui) instanceof IMEReceiver)
 	                return;
 	        } catch (Exception e) {/* relax */}
-	        Handle.INSTANCE.refreshInstance();
+	        Handle.INSTANCE.refreshInstance();//GUIの切り替えでIMの使用をoffにする
 
 	}
 }

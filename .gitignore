@@ -8,14 +8,8 @@
 
 
 !.gitignore
-!gradle
-!gradle.properties
-!gradlew
-!gradlew.bat
-!wslgradlew
 !src
 !libcocoainput
-!build.gradle
 !README.MD
 !build_lib_for_mac.sh
 !build_lib_for_win.sh
@@ -23,7 +17,9 @@
 !build_lib_all.sh
 !build_cocoainput_all_platform.sh
 !TODO.txt
+!LICENSE
 
 libcocoainput/build
 
 !fabric
+!forge

@@ -1,7 +1,9 @@
 package jp.axer.cocoainput.plugin;
 
+import java.util.function.BooleanSupplier;
+import org.jetbrains.annotations.Nullable;
 import jp.axer.cocoainput.CocoaInput;
-import jp.axer.cocoainput.arch.win.Logger;
+//import jp.axer.cocoainput.util.ModLogger;
 import jp.axer.cocoainput.util.PreeditFormatter;
 import jp.axer.cocoainput.util.Rect;
 import jp.axer.cocoainput.util.Tuple3;
@@ -13,22 +15,27 @@ public abstract class IMEReceiver {
 	protected boolean cursorVisible = true;
 	private boolean preeditBegin = false;
 	protected int originalCursorPosition = 0;
+	protected @Nullable BooleanSupplier allowTextDecoration;
+
+	private void replaceMarkedText(String text, int pos, int len)
+	{
+		//ModLogger.debug("replaceMarkedText() ... (new StringBuffer(\"" + this.getText() + "\").replace(" + pos + ", " + (pos + len) + ", \"" + text + "\")");
+		this.setText((new StringBuffer(this.getText()))
+			.replace(pos, pos + len, text).toString());
+	}
 
 	/*
 	 * position1 length1は下線と強調変換のため必須 position2 length2は意味をなしてない
 	 * positionの位置から文字数lengthの範囲という意味
 	 */
 	public void insertText(String aString, int position1, int length1) {//確定文字列 現状aString以外の引数は意味をなしてない
-		if (true) {
-			Logger.log("just comming:(" + aString + ") now:(" + getText() + ")");
-		}
+		//ModLogger.debug("just comming:(\"" + aString + "\") now:(\"" + getText() + "\") length:" + length);
 		if (!preeditBegin) {
 			originalCursorPosition = this.getCursorPos();
 		}
 		preeditBegin = false;
 		cursorVisible = true;
-		this.setText((new StringBuffer(this.getText()))
-				.replace(originalCursorPosition, originalCursorPosition + length, "").toString());
+		replaceMarkedText("", originalCursorPosition, length);
 		length = 0;
 		this.setCursorPos(originalCursorPosition);
 		this.setSelectionPos(originalCursorPosition);
@@ -65,21 +72,27 @@ public abstract class IMEReceiver {
 		int caretPosition;
 		boolean hasCaret;
 		String commitString;
-		if (CocoaInput.config.isAdvancedPreeditDraw()) {
-			Tuple3<String, Integer, Boolean> formattedText = PreeditFormatter.formatMarkedText(aString, position1,
-					length1);
+		if (allowTextDecoration != null && !allowTextDecoration.getAsBoolean()) {
+			hasCaret = false;
+			caretPosition = 0;
+			commitString = aString;
+		}
+		else if (CocoaInput.config.isAdvancedPreeditDraw()) {
+			//ModLogger.debug("PreeditFormatter.formatMarkedText(\"" + aString + "\", " + position1 + ", " + length1 + ")");
+			int max = aString.length();
+			Tuple3<String, Integer, Boolean> formattedText = PreeditFormatter.formatMarkedText(aString,
+				position1 > max ? max : position1,
+				position1 + length1 > max ? max - position1 : length1);
 			commitString = formattedText._1();
 			caretPosition = formattedText._2() + 4;//相対値
 			hasCaret = formattedText._3();
-			
 		}
 		else {
 			hasCaret=true;
 			caretPosition=0;
 			commitString=PreeditFormatter.SECTION+"n"+aString+PreeditFormatter.SECTION+"r";
 		}
-		this.setText((new StringBuffer(this.getText()))
-				.replace(originalCursorPosition, originalCursorPosition + length, commitString).toString());
+		replaceMarkedText(commitString, originalCursorPosition, length);
 		length = commitString.length();
 		if (hasCaret) {
 			this.cursorVisible = true;
@@ -116,10 +129,9 @@ public abstract class IMEReceiver {
 	}
 
 	protected void insertTextEmurated(String aString) {
-		this.setText((new StringBuffer(this.getText()))
-				.replace(this.getCursorPos(), this.getCursorPos(),
-						aString.substring(0, aString.length()))
-				.toString());
+		if (this.getCursorPos() <= this.getText().length()) {
+			replaceMarkedText(aString.substring(0, aString.length()), this.getCursorPos(), 0);
+		}
 		length = 0;
 		this.setCursorPos(this.getCursorPos() + aString.length());
 		this.notifyParent(this.getText());

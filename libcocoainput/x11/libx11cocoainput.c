@@ -189,7 +189,7 @@ void initialize(
                 XNInputStyle,
                 XIMPreeditNone|XIMStatusNone,
                 NULL);
-	CILog("Created inactiveic-> default");
+	CILog("Created inactiveic(%p)-> default", inactiveic);
 	activeic = XCreateIC(
                 xim,
                 XNClientWindow,
@@ -197,16 +197,16 @@ void initialize(
                 XNFocusWindow,
                 xwindow,
                 XNInputStyle,
-                XIMPreeditCallbacks|XIMStatusNone,
+                XIMPreeditCallbacks|XIMStatusCallbacks,
                 //XIMPreeditNothing|XIMStatusNothing,
                 XNPreeditAttributes,
                 preeditCallbacksList(),
                 XNStatusAttributes,
                 statusCallbacksList(),
                 NULL);
-	CILog("Created activeic");
+	CILog("Created activeic:%p", activeic);
 	XSetICFocus(inactiveic);
-	XUnsetICFocus(activeic);
+	if (activeic) XUnsetICFocus(activeic);
 	CILog("Completed ic focus");
 	XDestroyIC(x11c->ic);
 	x11c->ic = inactiveic;
@@ -217,7 +217,7 @@ void initialize(
 void set_focus(int flag){
 	XUnsetICFocus(x11c->ic);
 	if(flag){
-		x11c->ic=activeic;
+		if (activeic) x11c->ic=activeic;
 	}
 	else{
 		x11c->ic= inactiveic;
