@@ -30,7 +30,7 @@ public class DarwinController implements CocoaInputController {
 	            if (wrapper.get(gui) instanceof IMEReceiver)
 	                return;
 	        } catch (Exception e) {/* relax */}
-	        Handle.INSTANCE.refreshInstance();//GUIの切り替えでIMの使用をoffにする
+	        Handle.INSTANCE.refreshInstance();
 
 	}
 }

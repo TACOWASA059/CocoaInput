@@ -10,6 +10,10 @@ import net.minecraft.util.SharedConstants;
 public class SharedConstantsMixin {
 	//@ModifyConstant(method="isAllowedChatCharacter",constant=@Constant(intValue=167))
 	//@Inject(at=@At("HEAD"),method="isAllowedChatCharacter")
+	/**
+	 * @reason
+	 * @author
+	 */
 	@Overwrite
 	public static boolean isAllowedChatCharacter(char p) {
 		return p>=' '&&p!=127;

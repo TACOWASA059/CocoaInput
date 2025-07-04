@@ -90,7 +90,6 @@ public class CocoaInput {
 			fos.close();
 		} catch (IOException e1) {
 			ModLogger.error("Attempted to copy library to ./native/" + libraryName + " but failed.");
-			throw e1;
 		}
 		System.setProperty("jna.library.path", nativeDir.getAbsolutePath());
 		ModLogger.log("CocoaInput has copied library to native directory.");
