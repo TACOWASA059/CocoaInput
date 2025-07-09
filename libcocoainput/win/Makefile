@@ -4,7 +4,7 @@ FFLAGS	=
 OBJS	= libwincocoainput.o logger.o
 LIBS	= 
 TARGET	= libwincocoainput.dll
-DISTDIR	= ../../src/main/resources/win/
+DISTDIR	= ../../common/src/main/resources/win/
 RM	= rm
 CP	= cp
 
