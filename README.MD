@@ -14,17 +14,7 @@ To compile them, run one of below scripts which is your platform.
     - build_lib_for_x11.sh - For Linux
     - build_lib_for_win.sh - For Windows
     - (build_lib_all.sh - For all platform, You should create remote_build.sh to build macOS lib remotely.)
-3. Compile Forge Mod<br />
-Type below command.Forge mod will be located in "fabric/build/libs".
-```Bash
-./gradlew build
-```
-4. Compile Fabric Mod<br />
-Type below command.Fabric mod will be located in "fabric/build/libs".
-```Bash
-cd fabric
-./gradlew build
-```
+
 
 ## Installing
 CocoaInput official binaries has been distributed on https://www.curseforge.com/minecraft/mc-mods/cocoainput .
