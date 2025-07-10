@@ -60,3 +60,4 @@ rootProject.name = 'CocoaInput'
 include("common")
 include("fabric")
 include("forge")
+include("neoforge")
