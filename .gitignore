@@ -21,6 +21,9 @@ build/
 !build_cocoainput_all_platform.sh
 !TODO.txt
 !LICENSE
+!common/src/main/resources/darwin/*
+!common/src/main/resources/win/*
+!common/src/main/resources/x11/*
 
 libcocoainput/build
 
